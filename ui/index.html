@@ -17,13 +17,14 @@
     <script src="libs/jquery.min.js"></script>
     <script src="libs/popper.min.js"  crossorigin="anonymous"></script>
     <script src="libs/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH3cT-_lkw1W7FsFaGraz4cRLRFWUdauY&callback=init"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH3cT-_lkw1W7FsFaGraz4cRLRFWUdauY&libraries=visualization&callback=init"></script>
 
 
     <script src="js/map.js"></script>
     <script src="js/livetraffic.js"></script>
     <script src="js/gamenight.js"></script>
     <script src="js/parkandride.js"></script>
+    <script src="js/taxipickup.js"></script>
     <script>
 
       function init(){
@@ -37,6 +38,7 @@
           var lt = livetraffic(mapman.map());
           var gn = gamenight(mapman.map());
           var pr = parkandride(mapman.map());
+          var tp = taxipickup(mapman.map());
 
           $("#showTraffic").click(function(){          
             lt.show();
@@ -65,6 +67,23 @@
             gn.removeAll();
             pr.remove();
           });
+
+          $("#openDataStudio").click(function(){          
+            window.open("https://datastudio.google.com/navigation/reporting?hl=en",'_blank');
+          });
+
+          $("#hideTaxiPickups").click(function(){          
+            tp.remove();
+          });
+          
+
+          $("#showTaxiPickups").click(function(){          
+            var heatmapparam = $("#heatmapParameterSelect").val().toLowerCase();
+            tp.showTaxiPickupHotspots(heatmapparam);
+         
+          });
+
+
           
 
         });
@@ -111,26 +130,7 @@
                             </div>
                           </div>
 
-                          <div class="card dark">
-                              <div class="card-header" id="headingThree">
-                                <h5 class="mb-0">
-                                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Weekday Analysis
-                                  </button>
-                                </h5>
-                              </div>
-                              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                                <div class="card-body">
-
-                                    <p>Compare Weekdays and Hours with each other.</p>
-                                    <button class="btn btn-primary" id="showTraffic">Open Data Studio</button>
-                                    <br/><br/>
-
-                                    <iframe width="240" height="250" src="https://datastudio.google.com/embed/reporting/18Kc0QFJL-oNM3rSo2bti5Fn8Nm4JF01K/page/cDQP" frameborder="0" style="border:0" allowfullscreen></iframe>
-                                    
-                                </div>
-                              </div>
-                            </div>
+                    
 
                           <div class="card dark">
                             <div class="card-header" id="headingTwo">
@@ -159,8 +159,30 @@
                           </div>
                           
                           <div class="card dark">
+                              <div class="card-header" id="headingThree">
+                                <h5 class="mb-0">
+                                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Weekday Analysis
+                                  </button>
+                                </h5>
+                              </div>
+                              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                                <div class="card-body">
+
+                                    <p>Compare Weekdays and Hours with each other.</p>
+                                    <button class="btn btn-primary" id="openDataStudio">Open Data Studio</button>
+                                    <br/><br/>
+
+                                    <iframe width="240" height="250" src="https://datastudio.google.com/embed/reporting/18Kc0QFJL-oNM3rSo2bti5Fn8Nm4JF01K/page/cDQP" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                    
+                                </div>
+                              </div>
+                            </div>
+
+                          <div class="card dark">
                             <div class="card-header" id="headingFour">
                               <h5 class="mb-0">
+                                  
                                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
                                   Taxi Services
                                 </button>
@@ -168,7 +190,18 @@
                             </div>
                             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                               <div class="card-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                  <p>What are the most interesting spots for taxis and other drivers.</p>
+                                <select class="form-control" id="heatmapParameterSelect">
+                                      <option>PickupCount</option>
+                                      <option>AverageFare</option>
+                                      <option>AverageTripMiles</option>
+                                      <option>AverageTripSeconds</option>                                      
+                                    </select>
+                                <br/>
+                                <button class="btn btn-primary" id="showTaxiPickups">Show Pickup Hotspots</button>
+                                <br/><br/>
+                                  <button class="btn btn-danger" id="hideTaxiPickups">Hide Game Night Analysis</button>
+
                               </div>
                             </div>
                           </div>
