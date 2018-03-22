@@ -1,0 +1,8 @@
+runtime: go
+api_version: go1
+env: standard
+service: ui-businesscockpit
+
+handlers:
+- url: /.*
+  script: _go_app
